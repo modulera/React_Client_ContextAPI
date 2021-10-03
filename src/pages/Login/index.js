@@ -1,19 +1,19 @@
 import styles from './login.module.css';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import { loginUser, useAuthState, useAuthDispatch } from '../../context'
- 
- 
+
+
 function Login() {
- 
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
- 
+
     const dispatch = useAuthDispatch()
     const { loading, errorMessage, isAuthenticated } = useAuthState();
 
- 
- 
+    console.log('LoginP-1')
+
     const handleLogin = (e) => {
         e.preventDefault();
         loginUser(dispatch, email, password);
@@ -37,7 +37,7 @@ function Login() {
                     </div>
                     <div className="form-group">
                         <label htmlFor="exampleInputPassword1">Password</label>
-                        <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password" onChange={e => setPassword(e.target.value)}/>
+                        <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password" onChange={e => setPassword(e.target.value)} />
                     </div>
                     <button type="submit" className="btn btn-primary">Submit</button>
                     <p className='mt-3'>
@@ -51,5 +51,5 @@ function Login() {
         </div>
     )
 }
- 
+
 export default Login

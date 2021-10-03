@@ -18,27 +18,36 @@ import {
     AUTHENTICATED_SUCCESS
 } from './types';
 
-const baseURL = "http://127.0.0.1:8000"
+const baseURL = "http://127.0.0.1:8080/api"
 
-export const checkAuthenticated = (dispatch) => {
+export const checkAuthenticated = async (dispatch) => {
     if (typeof window == 'undefined') {
         dispatch({
             type: AUTHENTICATED_FAIL
         });
     }
-    if (localStorage.getItem('access')) {
+
+    // console.log('checkAuthenticated', localStorage.getItem('accessToken'))
+    if (localStorage.getItem('accessToken')) {
+        // const config = {
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json'
+        //     }
+        // };
+        // const body = JSON.stringify({ token: localStorage.getItem('accessToken') });
         const config = {
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `${localStorage.getItem('accessToken')}`,
             }
         };
-    
-        const body = JSON.stringify({ token: localStorage.getItem('access') });
-    
+
         try {
-            const res = axios.post(`${baseURL}/auth/jwt/verify/`, body, config);
-    
+            // const res = axios.post(`${baseURL}/auth/jwt/verify/`, body, config);
+            const res = await axios.get(`${baseURL}/auth/me/`, config);
+
             if (res.data.code !== 'token_not_valid') {
                 dispatch({
                     type: AUTHENTICATED_SUCCESS
@@ -62,19 +71,18 @@ export const checkAuthenticated = (dispatch) => {
     }
 };
 
-export const load_user = (dispatch) => {
-    if (localStorage.getItem('access')) {
+export const load_user = async (dispatch) => {
+    if (localStorage.getItem('accessToken')) {
         const config = {
             headers: {
+                'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization': `JWT ${localStorage.getItem('access')}`,
-                'Accept': 'application/json'
+                'Authorization': `${localStorage.getItem('accessToken')}`
             }
         };
 
         try {
-            const res = axios.get(`${baseURL}/auth/users/me/`, config);
-
+            const res = await axios.get(`${baseURL}/auth/me/`, config);
             dispatch({
                 type: USER_LOADED_SUCCESS,
                 payload: res.data
@@ -93,7 +101,7 @@ export const load_user = (dispatch) => {
     }
 }
 
-export const loginUser = async(dispatch, email, password) => {
+export const loginUser = async (dispatch, email, password) => {
     const config = {
         headers: {
             'Content-Type': 'application/json'
@@ -103,14 +111,14 @@ export const loginUser = async(dispatch, email, password) => {
     const body = JSON.stringify({ email, password });
 
     try {
-        const res = await axios.post(`${baseURL}/auth/jwt/create/`, body, config)
+        const res = await axios.post(`${baseURL}/auth/login/`, body, config)
         console.log(res.data)
         dispatch({
             type: LOGIN_SUCCESS,
             payload: res.data
         });
 
-        dispatch(load_user());
+        dispatch(load_user(dispatch));
     } catch (err) {
         dispatch({
             type: LOGIN_FAIL,
@@ -120,7 +128,7 @@ export const loginUser = async(dispatch, email, password) => {
 };
 
 
-export const signup = async(dispatch, username, email, phone, first_name, last_name, password, re_password ) => {
+export const signup = async (dispatch, username, email, phone, first_name, last_name, password, re_password) => {
     dispatch({
         type: 'START_LOADING'
     });
@@ -130,10 +138,10 @@ export const signup = async(dispatch, username, email, phone, first_name, last_n
         }
     }
 
-    const body = JSON.stringify({ username, email, phone, first_name, last_name, password, re_password }); 
+    const body = JSON.stringify({ username, email, phone, first_name, last_name, password, re_password });
 
     try {
-        const res = await axios.post(`${baseURL}/auth/users/`, body, config);
+        const res = await axios.post(`${baseURL}/auth/register/`, body, config);
 
         dispatch({
             type: SIGNUP_SUCCESS,
@@ -158,7 +166,7 @@ export const verify = (uid, token) => async dispatch => {
         }
     }
 
-    const body = JSON.stringify({ uid, token }); 
+    const body = JSON.stringify({ uid, token });
 
     try {
         const res = await axios.post(`${baseURL}/auth/users/activation/`, body, config);
@@ -175,7 +183,7 @@ export const verify = (uid, token) => async dispatch => {
     }
 };
 
-export const resetPassword = async(dispatch, email) => {
+export const resetPassword = async (dispatch, email) => {
     dispatch({
         type: 'START_LOADING'
     });
@@ -185,7 +193,7 @@ export const resetPassword = async(dispatch, email) => {
         }
     }
 
-    const body = JSON.stringify({ email }); 
+    const body = JSON.stringify({ email });
 
     try {
         await axios.post(`${baseURL}/auth/users/reset_password/`, body, config);
@@ -208,7 +216,7 @@ export const reset_password_confirm = (uid, token, new_password, re_new_password
         }
     }
 
-    const body = JSON.stringify({ uid, token, new_password, re_new_password }); 
+    const body = JSON.stringify({ uid, token, new_password, re_new_password });
 
     try {
         const res = await axios.post(`${baseURL}/auth/users/reset_password_confirm/`, body, config);
@@ -225,7 +233,7 @@ export const reset_password_confirm = (uid, token, new_password, re_new_password
     }
 };
 
-export const logout = async(dispatch) => {
+export const logout = async (dispatch) => {
     dispatch({
         type: 'START_LOADING'
     });

@@ -15,8 +15,8 @@ import {
 } from './types';
 
 export const initialState = {
-  access: localStorage.getItem('access'),
-  refresh: localStorage.getItem('refresh'),
+  accessToken: localStorage.getItem('accessToken'),
+  refreshToken: localStorage.getItem('refreshToken'),
   isAuthenticated: false,
   user: null,
   loading: false,
@@ -27,66 +27,66 @@ export const initialState = {
 
 export const AuthReducer = (state = initialState, action) => {
 
-  switch(action.type) {
-      case "START_LOADING":
-        return {
-          ...initialState,
-          loading: true
-        };
-      case AUTHENTICATED_SUCCESS:
-        return {
-            ...state,
-            isAuthenticated: true
-        }
-      case LOGIN_SUCCESS:
-        localStorage.setItem('access', action.payload.access);
-        return {
-          ...state,
-          isAuthenticated: true,
-          access: action.payload.access,
-          refresh: action.payload.refresh
-        }
-      case USER_LOADED_SUCCESS:
-        return {
-          ...state,
-          user: action.payload
-        }
-      case SIGNUP_SUCCESS:
-        return {
-          ...state,
-          isAuthenticated: true,
-        }
-      case AUTHENTICATED_FAIL:
-        return {
-          ...state,
-          isAuthenticated: false,
-          errorMessage: action.errorMessage
-        }
-      case RESET_PASSWORD_SUCCESS:
-        return {
-          ...state,
-          msg: action.msg
-        }
-      case USER_LOADED_FAIL:
-        return {
-          ...state,
-          user: null
-        }
-      case SIGNUP_FAIL:
-      case LOGIN_FAIL:
-      case LOGOUT:
-        localStorage.removeItem('access');
-        localStorage.removeItem('refresh');
-        return {
-          ...state,
-          access: null,
-          refresh: null,
-          isAuthenticated: false,
-          user: null,
-          errorMessage: action.errorMessage
+  switch (action.type) {
+    case "START_LOADING":
+      return {
+        ...initialState,
+        loading: true
+      };
+    case AUTHENTICATED_SUCCESS:
+      return {
+        ...state,
+        isAuthenticated: true
+      }
+    case LOGIN_SUCCESS:
+      localStorage.setItem('accessToken', action.payload.accessToken)
+      return {
+        ...state,
+        isAuthenticated: true,
+        accessToken: action.payload.accessToken,
+        refreshToken: action.payload.refreshToken
+      }
+    case USER_LOADED_SUCCESS:
+      return {
+        ...state,
+        user: action.payload
+      }
+    case SIGNUP_SUCCESS:
+      return {
+        ...state,
+        isAuthenticated: true,
+      }
+    case AUTHENTICATED_FAIL:
+      return {
+        ...state,
+        isAuthenticated: false,
+        errorMessage: action.errorMessage
+      }
+    case RESET_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        msg: action.msg
+      }
+    case USER_LOADED_FAIL:
+      return {
+        ...state,
+        user: null
+      }
+    case SIGNUP_FAIL:
+    case LOGIN_FAIL:
+    case LOGOUT:
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      return {
+        ...state,
+        accessToken: null,
+        refreshToken: null,
+        isAuthenticated: false,
+        user: null,
+        errorMessage: action.errorMessage
 
-        }
-      default:
-        return state
+      }
+    default:
+      return state
   }
 }
