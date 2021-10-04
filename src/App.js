@@ -12,25 +12,26 @@ import { checkAuthenticated, useAuthState, useAuthDispatch } from './context';
 
 function App() {
   const dispatch = useAuthDispatch()
-  const { isAuthenticated } = useAuthState()
 
-  // const authState = useAuthState()
-  // console.log('User isAuthenticated:', authState)
-  console.log('App rendered isAuthenticated:', isAuthenticated)
-
-  const fetchUser = async () => {
-    console.log('fetchUser trigger')
-    try {
-      await checkAuthenticated(dispatch);
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  const authState = useAuthState()
+  // const { isAuthenticated } = useAuthState()
+  // console.log('App rendered isAuthenticated:', authState)
 
   useEffect(() => {
     console.log('useEffect trigger')
-    if (!isAuthenticated) fetchUser()
-  }, [isAuthenticated]);
+
+    if (!authState.isAuthenticated) {
+      ; (async () => {
+        console.log('fetchUser trigger')
+        try {
+          await checkAuthenticated(dispatch);
+        } catch (err) {
+          console.log(err)
+        }
+      })();
+    }
+
+  }, [authState.isAuthenticated, dispatch]);
 
 
   return (

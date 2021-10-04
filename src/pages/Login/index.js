@@ -10,7 +10,7 @@ function Login() {
     const [password, setPassword] = useState('')
 
     const dispatch = useAuthDispatch()
-    const { loading, errorMessage, isAuthenticated } = useAuthState();
+    const { errorMessage, isAuthenticated } = useAuthState();
 
     // console.log('LoginP-1')
 

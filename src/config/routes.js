@@ -1,6 +1,6 @@
 import Login from '../pages/Login/index'
 import Dashboard from '../pages/Dashboard/index'
-import PageNotFound from '../pages/PageNotFound'
+// import PageNotFound from '../pages/PageNotFound'
 import Signup from '../pages/signup';
 import Home from '../pages/Home';
 import ResetPass from '../pages/ResetPass';
@@ -33,5 +33,5 @@ const routes = [
     isPrivate: false,
   }
 ];
- 
+
 export default routes;

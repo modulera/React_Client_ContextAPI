@@ -6,8 +6,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import reportWebVitals from './reportWebVitals';
 
 import { AuthProvider } from './context';
-import { AuthReducer, initialState } from "../src/context/reducer"
-
 import { LayoutProvider } from "./context/LayoutContext";
 
 ReactDOM.render(

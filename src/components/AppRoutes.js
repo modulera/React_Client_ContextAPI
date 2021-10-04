@@ -1,29 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Redirect, Route } from "react-router-dom";
 
-import { useAuthState, useAuthDispatch, checkAuthenticated } from '../context'
+import { useAuthState } from '../context'
 
 const AppRoutes = ({ component: Component, path, isPrivate, ...rest }) => {
     const authState = useAuthState()
-    // console.log('AuthState', authState)
-
-    // const dispatch = useAuthDispatch()
-    // const fetchUser = async () => {
-    //     console.log('fetchUser trigger')
-    //     try {
-    //         await checkAuthenticated(dispatch);
-    //     } catch (err) {
-    //         console.log(err)
-    //     }
-    // }
-
-    // // if (!authState.isAuthenticated) fetchUser()
-
-    // useEffect(() => {
-    //     console.log('useEffect trigger')
-    //     if (!authState.isAuthenticated) fetchUser()
-    // }, [authState.isAuthenticated]);
-
+    // console.log('authState', authState)
 
     return (
         <Route

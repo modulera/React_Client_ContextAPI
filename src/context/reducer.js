@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   SIGNUP_SUCCESS,
   SIGNUP_FAIL,
@@ -19,7 +20,7 @@ export const initialState = {
   refreshToken: localStorage.getItem('refreshToken'),
   isAuthenticated: false,
   user: null,
-  loading: false,
+  loading: true,
   errorMessage: null,
   msg: null,
 };
@@ -35,6 +36,7 @@ export const AuthReducer = (state = initialState, action) => {
     case AUTHENTICATED_SUCCESS:
       return {
         ...state,
+        loading: false,
         isAuthenticated: true
       }
     case LOGIN_SUCCESS:
@@ -42,6 +44,7 @@ export const AuthReducer = (state = initialState, action) => {
       localStorage.setItem('refreshToken', action.payload.refreshToken)
       return {
         ...state,
+        loading: false,
         isAuthenticated: true,
         accessToken: action.payload.accessToken,
         refreshToken: action.payload.refreshToken
@@ -49,22 +52,26 @@ export const AuthReducer = (state = initialState, action) => {
     case USER_LOADED_SUCCESS:
       return {
         ...state,
+        loading: false,
         user: action.payload
       }
     case SIGNUP_SUCCESS:
       return {
         ...state,
+        loading: false,
         isAuthenticated: true,
       }
     case AUTHENTICATED_FAIL:
       return {
         ...state,
+        loading: false,
         isAuthenticated: false,
         errorMessage: action.errorMessage
       }
     case RESET_PASSWORD_SUCCESS:
       return {
         ...state,
+        loading: false,
         msg: action.msg
       }
     case USER_LOADED_FAIL:
@@ -79,6 +86,7 @@ export const AuthReducer = (state = initialState, action) => {
       localStorage.removeItem('refreshToken');
       return {
         ...state,
+        loading: false,
         accessToken: null,
         refreshToken: null,
         isAuthenticated: false,

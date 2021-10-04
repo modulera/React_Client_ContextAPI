@@ -1,16 +1,27 @@
 import React, { Fragment } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import { logout, useAuthState } from '../context';
+import { Link, NavLink, useHistory } from 'react-router-dom';
+import { logout, useAuthState, useAuthDispatch } from '../context';
 
-const Navbar = () => {
-    const { isAuthenticated } = useAuthState()
+const Navbar = (props) => {
+    const history = useHistory();
+
+    const dispatch = useAuthDispatch()
+    const { loading, isAuthenticated } = useAuthState()
+
+    console.log('loading', loading)
+
+    const handleLogout = (e) => {
+        e.preventDefault()
+
+        logout(dispatch) //call the logout action
+        history.push('/login') //navigate to logout page on logout
+    }
 
     const authLinks = (
         <li className="nav-item">
-            <a className='nav-link' onClick={logout} href='#!'>Logout</a>
+            <a className='nav-link' onClick={handleLogout} href='#!'>Logout</a>
         </li>
     );
-
 
     const guestLinks = (
         <Fragment>
@@ -42,7 +53,7 @@ const Navbar = () => {
                     <li className="nav-item">
                         <NavLink className="nav-link" exact to='/'>Home</NavLink>
                     </li>
-                    {<Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>}
+                    {!loading && <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>}
                 </ul>
             </div>
         </nav>

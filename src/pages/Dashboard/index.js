@@ -1,7 +1,7 @@
 import React from 'react'
-import { Link, Redirect } from 'react-router-dom';
+// import { Link, Redirect } from 'react-router-dom';
 
-import { useAuthDispatch, useAuthState, logout } from '../../context'
+import { useAuthDispatch, logout } from '../../context'
 
 function Dashboard(props) {
     const dispatch = useAuthDispatch() // read dispatch method from context

@@ -3,7 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { signup, useAuthDispatch } from '../context';
 import { useAuthState } from '../context'
 
-const Signup = ( ) => {
+const Signup = () => {
     const [formData, setFormData] = useState({
         username: '',
         email: '',
@@ -15,7 +15,7 @@ const Signup = ( ) => {
     });
 
     const dispatch = useAuthDispatch()
-    const { loading, errorMessage, isAuthenticated } = useAuthState()
+    const { errorMessage, isAuthenticated } = useAuthState()
 
 
     const { username, email, phone, first_name, last_name, password, re_password } = formData;
@@ -26,38 +26,38 @@ const Signup = ( ) => {
         e.preventDefault();
 
         if (password === re_password) {
-            signup(dispatch, username, email, phone, first_name, last_name, password, re_password );
+            signup(dispatch, username, email, phone, first_name, last_name, password, re_password);
         }
     };
 
     if (isAuthenticated)
         return <Redirect to='/login' />;
-    
+
     return (
         <div className='container mt-5'>
             <h1>Sign Up</h1>
             <p>Create your Account</p>
             <form onSubmit={e => onSubmit(e)}>
                 <div className='form-group'>
-                    <input 
+                    <input
                         className='form-control'
                         type='text'
                         placeholder='Username*'
                         name='username'
                         value={username || ''}
                         onChange={e => onChange(e)}
-                        required 
+                        required
                     />
                 </div>
                 <div className='form-group'>
-                    <input 
+                    <input
                         className='form-control'
                         type='email'
                         placeholder='Email*'
                         name='email'
                         value={email || ''}
                         onChange={e => onChange(e)}
-                        required 
+                        required
                     />
                 </div>
                 <div className='form-group'>
@@ -118,14 +118,14 @@ const Signup = ( ) => {
                         required
                     />
                 </div>
-                { errorMessage ? 
+                {errorMessage ?
                     <p className='mt-3'>
                         {errorMessage}
                     </p>
                     :
                     <p></p>
                 }
-                
+
                 <button className='btn btn-primary' type='submit'>Register</button>
             </form>
             <p className='mt-3'>
