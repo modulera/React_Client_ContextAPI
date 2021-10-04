@@ -19,7 +19,7 @@ const AppRoutes = ({ component: Component, path, isPrivate, ...rest }) => {
             }
         })();
 
-    }, []);
+    }, [dispatch]);
 
     return (
         <Route
