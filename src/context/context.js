@@ -25,11 +25,6 @@ export function useAuthDispatch() {
 export const AuthProvider = ({ children }) => {
   const [user, dispatch] = useReducer(AuthReducer, initialState);
 
-  // @TODO: Test edilecek
-  // React.useEffect(() => {
-  //   console.log('Test UseEffect')
-  // }, [user]);
-
   return (
     <AuthStateContext.Provider value={user}>
       <AuthDispatchContext.Provider value={dispatch}>
