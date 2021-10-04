@@ -18,20 +18,28 @@ const Navbar = (props) => {
     }
 
     const authLinks = (
-        <li className="nav-item">
-            <a className='nav-link' onClick={handleLogout} href='#!'>Logout</a>
-        </li>
+        <>
+            <li className="nav-item">
+                <NavLink className="nav-link" exact to='/dashboard'>Dashboard</NavLink>
+            </li>
+            <li className="nav-item">
+                <a className='nav-link' onClick={handleLogout} href='#!'>Logout</a>
+            </li>
+        </>
     );
 
     const guestLinks = (
-        <Fragment>
+        <>
+            <li className="nav-item">
+                <NavLink className="nav-link" exact to='/'>Home</NavLink>
+            </li>
             <li className="nav-item">
                 <NavLink className="nav-link" exact to='/login'>Login</NavLink>
             </li>
             <li className="nav-item">
                 <NavLink className="nav-link" exact to='/signup'>Sign Up</NavLink>
             </li>
-        </Fragment>
+        </>
     );
 
     return (
@@ -50,9 +58,6 @@ const Navbar = (props) => {
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav">
-                    <li className="nav-item">
-                        <NavLink className="nav-link" exact to='/'>Home</NavLink>
-                    </li>
                     {!loading && <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>}
                 </ul>
             </div>
