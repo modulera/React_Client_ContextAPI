@@ -5,7 +5,7 @@ import { checkAuthenticated, useAuthState, useAuthDispatch } from '../context';
 
 const AppRoutes = ({ component: Component, path, isPrivate, ...rest }) => {
     const authState = useAuthState()
-    console.log('authState', authState)
+    // console.log('authState', authState)
 
     const dispatch = useAuthDispatch()
 
