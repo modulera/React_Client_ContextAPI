@@ -27,15 +27,7 @@ export const checkAuthenticated = async (dispatch) => {
         });
     }
 
-    // console.log('checkAuthenticated', localStorage.getItem('accessToken'))
     if (localStorage.getItem('accessToken')) {
-        // const config = {
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json'
-        //     }
-        // };
-        // const body = JSON.stringify({ token: localStorage.getItem('accessToken') });
         const config = {
             headers: {
                 'Accept': 'application/json',
@@ -45,12 +37,16 @@ export const checkAuthenticated = async (dispatch) => {
         };
 
         try {
-            // const res = axios.post(`${baseURL}/auth/jwt/verify/`, body, config);
-            const res = await axios.get(`${baseURL}/auth/me/`, config);
+            const res = await axios.get(`${baseURL}/auth/me`, config);
 
-            if (res.data.code !== 'token_not_valid') {
+            if (!res.data.error) {
                 dispatch({
                     type: AUTHENTICATED_SUCCESS
+                });
+
+                dispatch({
+                    type: USER_LOADED_SUCCESS,
+                    payload: res.data
                 });
             } else {
                 dispatch({
@@ -66,7 +62,7 @@ export const checkAuthenticated = async (dispatch) => {
     } else {
         dispatch({
             type: AUTHENTICATED_FAIL,
-            // errorMessage: err
+            // errorMessage: 'AccessToken is required!'
         });
     }
 };
@@ -82,7 +78,7 @@ export const load_user = async (dispatch) => {
         };
 
         try {
-            const res = await axios.get(`${baseURL}/auth/me/`, config);
+            const res = await axios.get(`${baseURL}/auth/me`, config);
             dispatch({
                 type: USER_LOADED_SUCCESS,
                 payload: res.data
@@ -111,22 +107,21 @@ export const loginUser = async (dispatch, email, password) => {
     const body = JSON.stringify({ email, password });
 
     try {
-        const res = await axios.post(`${baseURL}/auth/login/`, body, config)
-        console.log(res.data)
+        const res = await axios.post(`${baseURL}/auth/login`, body, config)
+
         dispatch({
             type: LOGIN_SUCCESS,
             payload: res.data
         });
 
-        dispatch(load_user(dispatch));
+        load_user(dispatch)
     } catch (err) {
         dispatch({
             type: LOGIN_FAIL,
-            errorMessage: err
+            errorMessage: (err.error + `: ` + err.message)
         });
     }
 };
-
 
 export const signup = async (dispatch, username, email, phone, first_name, last_name, password, re_password) => {
     dispatch({
@@ -141,14 +136,13 @@ export const signup = async (dispatch, username, email, phone, first_name, last_
     const body = JSON.stringify({ username, email, phone, first_name, last_name, password, re_password });
 
     try {
-        const res = await axios.post(`${baseURL}/auth/register/`, body, config);
+        const res = await axios.post(`${baseURL}/auth/register`, body, config);
 
         dispatch({
             type: SIGNUP_SUCCESS,
             payload: res.data
         });
     } catch (err) {
-        console.log(err)
         dispatch({
             type: SIGNUP_FAIL,
             errorMessage: err
@@ -169,7 +163,7 @@ export const verify = (uid, token) => async dispatch => {
     const body = JSON.stringify({ uid, token });
 
     try {
-        const res = await axios.post(`${baseURL}/auth/users/activation/`, body, config);
+        const res = await axios.post(`${baseURL}/auth/users/activation`, body, config);
 
         dispatch({
             type: ACTIVATION_SUCCESS,
@@ -196,7 +190,7 @@ export const resetPassword = async (dispatch, email) => {
     const body = JSON.stringify({ email });
 
     try {
-        await axios.post(`${baseURL}/auth/users/reset_password/`, body, config);
+        await axios.post(`${baseURL}/auth/users/reset_password`, body, config);
         dispatch({
             type: RESET_PASSWORD_SUCCESS,
             msg: "Email has been sent! Check your email for further direction."
@@ -219,7 +213,7 @@ export const reset_password_confirm = (uid, token, new_password, re_new_password
     const body = JSON.stringify({ uid, token, new_password, re_new_password });
 
     try {
-        const res = await axios.post(`${baseURL}/auth/users/reset_password_confirm/`, body, config);
+        const res = await axios.post(`${baseURL}/auth/users/reset_password_confirm`, body, config);
 
         dispatch({
             type: RESET_PASSWORD_CONFIRM_SUCCESS,

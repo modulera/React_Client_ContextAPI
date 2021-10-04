@@ -4,14 +4,19 @@ import './index.css';
 import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import reportWebVitals from './reportWebVitals';
-import {AuthReducer, initialState} from "../src/context/reducer"
+
 import { AuthProvider } from './context';
+import { AuthReducer, initialState } from "../src/context/reducer"
+
+import { LayoutProvider } from "./context/LayoutContext";
 
 ReactDOM.render(
   <React.StrictMode>
-    <AuthProvider initialState={initialState} reducer={AuthReducer}>
+    <LayoutProvider>
+      <AuthProvider>
         <App />
-    </AuthProvider>
+      </AuthProvider>
+    </LayoutProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

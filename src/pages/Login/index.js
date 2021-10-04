@@ -12,7 +12,7 @@ function Login() {
     const dispatch = useAuthDispatch()
     const { loading, errorMessage, isAuthenticated } = useAuthState();
 
-    console.log('LoginP-1')
+    // console.log('LoginP-1')
 
     const handleLogin = (e) => {
         e.preventDefault();

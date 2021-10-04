@@ -24,7 +24,6 @@ export const initialState = {
   msg: null,
 };
 
-
 export const AuthReducer = (state = initialState, action) => {
 
   switch (action.type) {
@@ -40,6 +39,7 @@ export const AuthReducer = (state = initialState, action) => {
       }
     case LOGIN_SUCCESS:
       localStorage.setItem('accessToken', action.payload.accessToken)
+      localStorage.setItem('refreshToken', action.payload.refreshToken)
       return {
         ...state,
         isAuthenticated: true,
@@ -89,4 +89,5 @@ export const AuthReducer = (state = initialState, action) => {
     default:
       return state
   }
-}
+
+};
