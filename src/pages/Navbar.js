@@ -4,7 +4,6 @@ import { logout, useAuthState, useAuthDispatch } from '../context';
 
 const Navbar = (props) => {
     const { loading, isAuthenticated } = useAuthState()
-    // console.log('loading', loading)
 
     const history = useHistory();
     const dispatch = useAuthDispatch()
