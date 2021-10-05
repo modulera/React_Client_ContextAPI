@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './index.scss';
 import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import reportWebVitals from './reportWebVitals';
 
-import { AuthProvider } from './context';
+import { AuthProvider } from './context/auth';
 import { LayoutProvider } from "./context/LayoutContext";
 
 ReactDOM.render(

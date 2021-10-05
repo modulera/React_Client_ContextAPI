@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { signup, useAuthDispatch } from '../context';
-import { useAuthState } from '../context'
+import { signup, useAuthState, useAuthDispatch } from '../../../context/auth';
 
 const Signup = () => {
     const [formData, setFormData] = useState({

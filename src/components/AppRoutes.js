@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Redirect, Route, useHistory } from "react-router-dom";
 
-import { checkAuthenticated, useAuthState, useAuthDispatch } from '../context';
+import { checkAuthenticated, useAuthState, useAuthDispatch } from '../context/auth';
 
 import logger from '../utils/logger';
 

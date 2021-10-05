@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { resetPassword } from '../context/actions'
-import { useAuthDispatch, useAuthState } from '../context/context'
+import { resetPassword } from '../../context/auth/actions'
+import { useAuthDispatch, useAuthState } from '../../context/auth/context'
 
 function ResetPass() {
     const [email, setEmail] = useState('')

@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar from '../pages/Navbar';
+import Navbar from './Navbar';
 
 const Layout = (props) => {
     return (

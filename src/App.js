@@ -4,8 +4,8 @@ import {
   Switch,
 } from 'react-router-dom';
 
-import Layout from "./hoc/layout";
 import routes from './config/routes';
+import Layout from "./components/Layout";
 import AppRoute from './components/AppRoutes';
 
 function App() {
