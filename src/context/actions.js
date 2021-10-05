@@ -18,9 +18,9 @@ import {
     AUTHENTICATED_SUCCESS
 } from './types';
 
-const baseURL = "http://127.0.0.1:8080/api"
+const baseURL = "http://127.0.0.1:8080/api";
 
-export const checkAuthenticated = async (dispatch) => {
+export const checkAuthenticated = async (dispatch, isPrivate, path, history) => {
     if (typeof window == 'undefined') {
         dispatch({
             type: AUTHENTICATED_FAIL
@@ -39,25 +39,27 @@ export const checkAuthenticated = async (dispatch) => {
         try {
             const res = await axios.get(`${baseURL}/auth/me`, config);
 
-            if (!res.data.error) {
-                dispatch({
-                    type: AUTHENTICATED_SUCCESS
-                });
+            dispatch({
+                type: AUTHENTICATED_SUCCESS
+            });
 
-                dispatch({
-                    type: USER_LOADED_SUCCESS,
-                    payload: res.data
-                });
-            } else {
-                dispatch({
-                    type: AUTHENTICATED_FAIL
-                });
-            }
+            dispatch({
+                type: USER_LOADED_SUCCESS,
+                payload: res.data
+            });
+
         } catch (err) {
+            const { ...res } = err.response.data; // error, message, statusCode
             dispatch({
                 type: AUTHENTICATED_FAIL,
-                errorMessage: err
+                errorMessage: res.error + ': ' + res.message
             });
+
+            // isPrivate && 
+            if (path !== '/login') {
+                history.push('/login');
+            }
+
         }
     } else {
         dispatch({
@@ -84,9 +86,10 @@ export const load_user = async (dispatch) => {
                 payload: res.data
             });
         } catch (err) {
+            const { ...res } = err.response.data;
             dispatch({
                 type: USER_LOADED_FAIL,
-                errorMessage: err
+                errorMessage: res.error + ': ' + res.message
             });
         }
     } else {
@@ -114,11 +117,15 @@ export const loginUser = async (dispatch, email, password) => {
             payload: res.data
         });
 
-        load_user(dispatch)
+        dispatch({
+            type: USER_LOADED_SUCCESS,
+            payload: res.data.user
+        });
     } catch (err) {
+        const { ...res } = err.response.data;
         dispatch({
             type: LOGIN_FAIL,
-            errorMessage: (err.error + `: ` + err.message)
+            errorMessage: res.error + ': ' + res.message
         });
     }
 };
@@ -143,9 +150,10 @@ export const signup = async (dispatch, username, email, phone, first_name, last_
             payload: res.data
         });
     } catch (err) {
+        const { ...res } = err.response.data;
         dispatch({
             type: SIGNUP_FAIL,
-            errorMessage: err
+            errorMessage: res.error + ': ' + res.message
         });
     }
 };
@@ -170,9 +178,10 @@ export const verify = (uid, token) => async dispatch => {
             payload: res.data
         });
     } catch (err) {
+        const { ...res } = err.response.data;
         dispatch({
             type: ACTIVATION_FAIL,
-            errorMessage: err
+            errorMessage: res.error + ': ' + res.message
         });
     }
 };
@@ -196,9 +205,10 @@ export const resetPassword = async (dispatch, email) => {
             msg: "Email has been sent! Check your email for further direction."
         });
     } catch (err) {
+        const { ...res } = err.response.data;
         dispatch({
             type: RESET_PASSWORD_FAIL,
-            errorMessage: err
+            errorMessage: res.error + ': ' + res.message
         });
     }
 };
@@ -220,9 +230,10 @@ export const reset_password_confirm = (uid, token, new_password, re_new_password
             payload: res.data
         });
     } catch (err) {
+        const { ...res } = err.response.data;
         dispatch({
             type: RESET_PASSWORD_CONFIRM_FAIL,
-            errorMessage: err
+            errorMessage: res.error + ': ' + res.message
         });
     }
 };
